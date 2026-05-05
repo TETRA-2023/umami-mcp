@@ -1,6 +1,6 @@
 {
   "name": "@tetra-2023/umami-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for Umami Analytics with stdio + streamable-http transports and an optional bearer-token middleware for gateway deployment",
   "type": "module",
   "bin": {

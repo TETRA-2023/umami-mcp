@@ -64,14 +64,21 @@ export async function runHttp(
   }
 
   if (transportKind === "streamable-http") {
-    // Stateless mode (sessionIdGenerator: undefined). A single shared
-    // McpServer + transport pair handles every request independently —
-    // no session bookkeeping, every call is a fresh JSON-RPC exchange.
-    // This is the LiteLLM-gateway-friendly mode (sonarqube-mcp uses the
-    // same pattern). Stateful mode would require a per-session transport
-    // map keyed by Mcp-Session-Id; not worth the complexity here.
+    // Stateless + JSON-response mode. A single shared McpServer + transport
+    // pair handles every request as an independent JSON-RPC exchange:
+    // - sessionIdGenerator: undefined → no session bookkeeping
+    // - enableJsonResponse: true → reply with one-shot application/json
+    //   instead of SSE (event/data) framing, even when the client's Accept
+    //   header lists text/event-stream
+    //
+    // Both flags together mirror the gateway-friendly contract used by
+    // sonarqube-mcp. LiteLLM's tool-discovery path (mcp-rest/tools/list)
+    // expects a single JSON response; SSE-mode replies hang the gateway's
+    // list_tools coroutine and surface as "MCP client list_tools was
+    // cancelled" in the LiteLLM warning logs.
     const transport = new StreamableHTTPServerTransport({
       sessionIdGenerator: undefined,
+      enableJsonResponse: true,
     });
     await server.connect(transport);
 
