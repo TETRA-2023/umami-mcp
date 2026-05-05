@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-MCP server for Umami Analytics. TETRA fork of `mikusnuz/umami-mcp@v1.2.1`
-extended with HTTP transport selection and a bearer-token middleware so the
-wrapper can sit behind the LiteLLM gateway.
+MCP server for Umami Analytics. Extends `mikusnuz/umami-mcp@v1.2.1` with HTTP
+transport selection and a bearer-token middleware so the wrapper can sit
+behind an HTTP gateway (LiteLLM, Kong, NGINX, etc.).
 
 - **Package**: `@tetra-2023/umami-mcp`
 - **Node**: >= 20
@@ -30,8 +30,9 @@ src/
   `bearerAuth` only when `MCP_BEARER_TOKEN` is set, and connects either
   `StreamableHTTPServerTransport` (`/mcp`) or `SSEServerTransport`
   (`/sse` + `/messages`).
-- `auth.ts` is the canonical bearer-middleware port from `homarr-mcp/src/auth.py`.
-  Constant-time compare; identical 401 body across all failure modes.
+- `auth.ts` enforces `Authorization: Bearer <token>` with constant-time
+  compare (`crypto.timingSafeEqual`) and an identical 401 body across all
+  failure modes (no length-leak side channel).
 
 ## Umami API
 
@@ -68,5 +69,4 @@ Environment variables: `UMAMI_URL`, `UMAMI_API_KEY` or `UMAMI_USERNAME`+
 ## Origin
 
 Initial import: `mikusnuz/umami-mcp@v1.2.1` (MIT). LICENSE preserved
-verbatim. Disconnected fork — no upstream PRs planned. See README §
-"Origin & Acknowledgments".
+verbatim. Disconnected fork. See README § "Origin & Acknowledgments".
