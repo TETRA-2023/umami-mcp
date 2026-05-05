@@ -1,0 +1,50 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mikusnuz/umami",
+  "description": "MCP server for Umami Analytics API v2 — websites, stats, events, reports, and realtime",
+  "repository": {
+    "url": "https://github.com/mikusnuz/umami-mcp",
+    "source": "github"
+  },
+  "version": "1.2.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@mikusnuz/umami-mcp",
+      "version": "1.2.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "UMAMI_URL",
+          "description": "Your Umami instance URL",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "UMAMI_USERNAME",
+          "description": "Login username (for self-hosted)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "UMAMI_PASSWORD",
+          "description": "Login password (for self-hosted)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "UMAMI_API_KEY",
+          "description": "API key (for Umami Cloud)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
