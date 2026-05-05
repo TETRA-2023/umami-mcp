@@ -7,7 +7,6 @@
  *   middleware when `MCP_BEARER_TOKEN` is set, and listen on `MCP_HOST`:`MCP_PORT`.
  */
 
-import { randomUUID } from "node:crypto";
 import express from "express";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -65,8 +64,14 @@ export async function runHttp(
   }
 
   if (transportKind === "streamable-http") {
+    // Stateless mode (sessionIdGenerator: undefined). A single shared
+    // McpServer + transport pair handles every request independently —
+    // no session bookkeeping, every call is a fresh JSON-RPC exchange.
+    // This is the LiteLLM-gateway-friendly mode (sonarqube-mcp uses the
+    // same pattern). Stateful mode would require a per-session transport
+    // map keyed by Mcp-Session-Id; not worth the complexity here.
     const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: () => randomUUID(),
+      sessionIdGenerator: undefined,
     });
     await server.connect(transport);
 
