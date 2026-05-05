@@ -38,8 +38,8 @@ export async function runStdio(server: McpServer): Promise<void> {
 }
 
 export async function runHttp(
-  server: McpServer,
   transportKind: "streamable-http" | "sse",
+  serverFactory: () => McpServer,
   options: {
     host?: string;
     port?: number;
@@ -64,26 +64,31 @@ export async function runHttp(
   }
 
   if (transportKind === "streamable-http") {
-    // Stateless + JSON-response mode. A single shared McpServer + transport
-    // pair handles every request as an independent JSON-RPC exchange:
+    // Stateless + JSON-response mode. Per the MCP TS SDK README, stateless
+    // mode REQUIRES fresh server+transport instances per request to avoid
+    // JSON-RPC request ID collisions when multiple clients connect
+    // concurrently. The serverFactory is invoked on every POST.
+    //
     // - sessionIdGenerator: undefined → no session bookkeeping
     // - enableJsonResponse: true → reply with one-shot application/json
-    //   instead of SSE (event/data) framing, even when the client's Accept
-    //   header lists text/event-stream
+    //   instead of SSE (event/data) framing
     //
-    // Both flags together mirror the gateway-friendly contract used by
-    // sonarqube-mcp. LiteLLM's tool-discovery path (mcp-rest/tools/list)
-    // expects a single JSON response; SSE-mode replies hang the gateway's
-    // list_tools coroutine and surface as "MCP client list_tools was
-    // cancelled" in the LiteLLM warning logs.
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-      enableJsonResponse: true,
-    });
-    await server.connect(transport);
-
-    const handle = async (req: express.Request, res: express.Response): Promise<void> => {
+    // This is the gateway-friendly contract; LiteLLM's
+    // mcp-rest/tools/list path expects a single JSON response and
+    // hangs ('MCP client list_tools was cancelled' in warnings) when
+    // the server replies with SSE framing.
+    app.post("/mcp", async (req, res) => {
+      const server = serverFactory();
+      const transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: undefined,
+        enableJsonResponse: true,
+      });
+      res.on("close", () => {
+        void transport.close();
+        void server.close();
+      });
       try {
+        await server.connect(transport);
         await transport.handleRequest(req, res, req.body);
       } catch (err) {
         console.error("[umami-mcp] handleRequest error:", err);
@@ -91,33 +96,41 @@ export async function runHttp(
           res.status(500).json({ error: "internal_error" });
         }
       }
+    });
+    // GET / DELETE on /mcp are session-management endpoints — stateless
+    // mode doesn't use sessions, so reject explicitly.
+    const rejectStateful = (_req: express.Request, res: express.Response): void => {
+      res.status(405).json({ error: "method_not_allowed" });
     };
-
-    app.post("/mcp", handle);
-    app.get("/mcp", handle);
-    app.delete("/mcp", handle);
+    app.get("/mcp", rejectStateful);
+    app.delete("/mcp", rejectStateful);
   } else {
     // SSE — legacy transport. Each GET /sse opens an event stream; the
     // matching POST /messages?sessionId=… delivers JSON-RPC payloads.
-    const sessions = new Map<string, SSEServerTransport>();
+    // SSE is inherently per-session (long-lived event stream), so we keep
+    // a session map here.
+    const sessions = new Map<string, { transport: SSEServerTransport; server: McpServer }>();
 
     app.get("/sse", async (_req, res) => {
+      const server = serverFactory();
       const transport = new SSEServerTransport("/messages", res);
-      sessions.set(transport.sessionId, transport);
+      sessions.set(transport.sessionId, { transport, server });
       res.on("close", () => {
         sessions.delete(transport.sessionId);
+        void transport.close();
+        void server.close();
       });
       await server.connect(transport);
     });
 
     app.post("/messages", async (req, res) => {
       const sessionId = String(req.query.sessionId ?? "");
-      const transport = sessions.get(sessionId);
-      if (!transport) {
+      const session = sessions.get(sessionId);
+      if (!session) {
         res.status(400).json({ error: "unknown_session" });
         return;
       }
-      await transport.handlePostMessage(req, res, req.body);
+      await session.transport.handlePostMessage(req, res, req.body);
     });
   }
 

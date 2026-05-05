@@ -17,10 +17,10 @@ import { registerAccountResources } from "./resources/account.js";
 import { registerPrompts } from "./prompts/index.js";
 import { resolveTransport, runHttp, runStdio } from "./transport.js";
 
-function buildServer(client: UmamiClient): McpServer {
+export function buildServer(client: UmamiClient): McpServer {
   const server = new McpServer({
     name: "umami-mcp",
-    version: "0.1.0",
+    version: "0.1.3",
   });
 
   registerWebsiteTools(server, client);
@@ -41,7 +41,6 @@ function buildServer(client: UmamiClient): McpServer {
 
 const config = loadConfig();
 const client = new UmamiClient(config);
-const server = buildServer(client);
 
 async function main(): Promise<void> {
   const transport = resolveTransport();
@@ -49,10 +48,15 @@ async function main(): Promise<void> {
   console.error(`[umami-mcp] starting with ${transport} transport`);
 
   if (transport === "stdio") {
-    await runStdio(server);
+    // Stdio is single-connection; one shared server is fine.
+    await runStdio(buildServer(client));
     return;
   }
-  await runHttp(server, transport);
+
+  // HTTP transports get a per-request server factory — the MCP TS SDK requires
+  // fresh server+transport instances per request in stateless mode to avoid
+  // request ID collisions across concurrent clients.
+  await runHttp(transport, () => buildServer(client));
 }
 
 main().catch((err) => {
