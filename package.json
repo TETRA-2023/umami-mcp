@@ -1,8 +1,7 @@
 {
-  "name": "@mikusnuz/umami-mcp",
-  "version": "1.2.1",
-  "mcpName": "io.github.mikusnuz/umami",
-  "description": "Full-coverage MCP server for Umami Analytics API v2",
+  "name": "@tetra-2023/umami-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Umami Analytics — TETRA fork of mikusnuz/umami-mcp with HTTP transport + bearer middleware for gateway deployment",
   "type": "module",
   "bin": {
     "umami-mcp": "dist/index.js"
@@ -14,31 +13,33 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "lint": "tsc --noEmit"
   },
   "keywords": [
     "mcp",
     "umami",
     "analytics",
     "model-context-protocol",
-    "ai",
-    "claude"
+    "tetra"
   ],
-  "author": "mikusnuz",
+  "author": "TETRA",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikusnuz/umami-mcp.git"
+    "url": "git+https://github.com/TETRA-2023/umami-mcp.git"
   },
-  "homepage": "https://github.com/mikusnuz/umami-mcp",
+  "homepage": "https://github.com/TETRA-2023/umami-mcp",
   "bugs": {
-    "url": "https://github.com/mikusnuz/umami-mcp/issues"
+    "url": "https://github.com/TETRA-2023/umami-mcp/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
+    "express": "^4.21.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^22.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.7.0"

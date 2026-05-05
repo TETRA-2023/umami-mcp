@@ -1,0 +1,9 @@
+.git
+.github
+node_modules
+dist
+*.log
+.env
+.env.*
+!.env.example
+README.ko.md
