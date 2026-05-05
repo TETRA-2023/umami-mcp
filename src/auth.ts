@@ -25,10 +25,7 @@ export interface BearerAuthOptions {
   skipPaths?: readonly string[];
 }
 
-export function bearerAuth({
-  expectedToken,
-  skipPaths = [],
-}: BearerAuthOptions): RequestHandler {
+export function bearerAuth({ expectedToken, skipPaths = [] }: BearerAuthOptions): RequestHandler {
   if (!expectedToken) {
     throw new Error("expectedToken must be a non-empty string");
   }

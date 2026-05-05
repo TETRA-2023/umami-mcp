@@ -25,7 +25,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         referrer,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -49,7 +49,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         referrer,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -90,7 +90,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         limit,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -112,7 +112,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         url,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -136,7 +136,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         orderBy,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -148,7 +148,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       const data = await client.call("GET", `/api/websites/${websiteId}/daterange`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -172,7 +172,7 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
         eventName,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -185,14 +185,19 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
       referrer: z.string().optional().describe("Filter by referrer"),
     },
     async ({ websiteId, startAt, endAt, url, referrer }) => {
-      const data = await client.call("GET", `/api/websites/${websiteId}/sessions/stats`, undefined, {
-        startAt,
-        endAt,
-        url,
-        referrer,
-      });
+      const data = await client.call(
+        "GET",
+        `/api/websites/${websiteId}/sessions/stats`,
+        undefined,
+        {
+          startAt,
+          endAt,
+          url,
+          referrer,
+        },
+      );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -203,11 +208,16 @@ export function registerStatsTools(server: McpServer, client: UmamiClient) {
       ...dateRange,
     },
     async ({ websiteId, startAt, endAt }) => {
-      const data = await client.call("GET", `/api/websites/${websiteId}/sessions/weekly`, undefined, {
-        startAt,
-        endAt,
-      });
+      const data = await client.call(
+        "GET",
+        `/api/websites/${websiteId}/sessions/weekly`,
+        undefined,
+        {
+          startAt,
+          endAt,
+        },
+      );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }

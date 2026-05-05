@@ -11,10 +11,7 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
       hostname: z.string().describe("Hostname of the site (e.g. 'example.com')"),
       url: z.string().describe("URL path (e.g. '/checkout')"),
       eventName: z.string().optional().describe("Custom event name (omit for pageview)"),
-      eventData: z
-        .record(z.unknown())
-        .optional()
-        .describe("Custom event data as key-value pairs"),
+      eventData: z.record(z.unknown()).optional().describe("Custom event data as key-value pairs"),
       referrer: z.string().optional().describe("Referrer URL"),
       language: z.string().optional().describe("Browser language (e.g. 'en-US')"),
       title: z.string().optional().describe("Page title"),
@@ -36,7 +33,7 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         payload,
       });
       return { content: [{ type: "text", text: "Event sent successfully." }] };
-    }
+    },
   );
 
   server.tool(
@@ -48,14 +45,12 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
       endAt: z.number().describe("End timestamp in milliseconds"),
     },
     async ({ websiteId, startAt, endAt }) => {
-      const data = await client.call(
-        "GET",
-        `/api/websites/${websiteId}/values`,
-        undefined,
-        { startAt, endAt }
-      );
+      const data = await client.call("GET", `/api/websites/${websiteId}/values`, undefined, {
+        startAt,
+        endAt,
+      });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -72,10 +67,10 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/event-data/events`,
         undefined,
-        { startAt, endAt, eventName }
+        { startAt, endAt, eventName },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -92,10 +87,10 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/event-data/fields`,
         undefined,
-        { startAt, endAt, eventName }
+        { startAt, endAt, eventName },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -113,10 +108,10 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/event-data/values`,
         undefined,
-        { startAt, endAt, eventName, propertyName }
+        { startAt, endAt, eventName, propertyName },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -133,10 +128,10 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/event-data/stats`,
         undefined,
-        { startAt, endAt, eventName }
+        { startAt, endAt, eventName },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -154,7 +149,7 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
             referrer: z.string().optional().describe("Referrer URL"),
             language: z.string().optional().describe("Browser language"),
             title: z.string().optional().describe("Page title"),
-          })
+          }),
         )
         .describe("Array of events to send"),
     },
@@ -176,7 +171,9 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
         };
       });
       await client.call("POST", "/api/batch", { events: payload });
-      return { content: [{ type: "text", text: `Batch of ${events.length} events sent successfully.` }] };
-    }
+      return {
+        content: [{ type: "text", text: `Batch of ${events.length} events sent successfully.` }],
+      };
+    },
   );
 }

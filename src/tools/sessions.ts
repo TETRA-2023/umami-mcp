@@ -11,12 +11,9 @@ export function registerSessionTools(server: McpServer, client: UmamiClient) {
       sessionId: z.string().describe("Session UUID"),
     },
     async ({ websiteId, sessionId }) => {
-      const data = await client.call(
-        "GET",
-        `/api/websites/${websiteId}/sessions/${sessionId}`
-      );
+      const data = await client.call("GET", `/api/websites/${websiteId}/sessions/${sessionId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -29,10 +26,10 @@ export function registerSessionTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId, sessionId }) => {
       const data = await client.call(
         "GET",
-        `/api/websites/${websiteId}/sessions/${sessionId}/activity`
+        `/api/websites/${websiteId}/sessions/${sessionId}/activity`,
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -45,10 +42,10 @@ export function registerSessionTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId, sessionId }) => {
       const data = await client.call(
         "GET",
-        `/api/websites/${websiteId}/sessions/${sessionId}/properties`
+        `/api/websites/${websiteId}/sessions/${sessionId}/properties`,
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -64,10 +61,10 @@ export function registerSessionTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/session-data/properties`,
         undefined,
-        { startAt, endAt }
+        { startAt, endAt },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -84,9 +81,9 @@ export function registerSessionTools(server: McpServer, client: UmamiClient) {
         "GET",
         `/api/websites/${websiteId}/session-data/values`,
         undefined,
-        { startAt, endAt, propertyName }
+        { startAt, endAt, propertyName },
       );
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }

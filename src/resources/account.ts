@@ -17,6 +17,6 @@ export function registerAccountResources(server: McpServer, client: UmamiClient)
           },
         ],
       };
-    }
+    },
   );
 }

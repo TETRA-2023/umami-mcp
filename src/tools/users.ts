@@ -20,7 +20,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
         orderBy,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -36,7 +36,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
       if (role) body.role = role;
       const data = await client.call("POST", "/api/users", body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -48,7 +48,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
     async ({ userId }) => {
       const data = await client.call("GET", `/api/users/${userId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -67,7 +67,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
       if (role !== undefined) body.role = role;
       const data = await client.call("POST", `/api/users/${userId}`, body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -79,7 +79,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
     async ({ userId }) => {
       await client.call("DELETE", `/api/users/${userId}`);
       return { content: [{ type: "text", text: `User ${userId} deleted successfully.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -98,7 +98,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -115,7 +115,7 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
         endAt,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -134,6 +134,6 @@ export function registerUserTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }

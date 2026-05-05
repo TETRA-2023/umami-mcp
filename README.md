@@ -29,15 +29,15 @@ cp .env.example .env
 # Edit .env: UMAMI_URL + (UMAMI_API_KEY) or (UMAMI_USERNAME + UMAMI_PASSWORD)
 ```
 
-| Variable | Description | Default |
-| --- | --- | --- |
-| `UMAMI_URL` | Umami instance URL (no trailing slash) | *required* |
-| `UMAMI_API_KEY` | Umami API key | *one of API key OR user/pass required* |
-| `UMAMI_USERNAME` / `UMAMI_PASSWORD` | Self-hosted login credentials | — |
-| `UMAMI_TRANSPORT` | `stdio` \| `streamable-http` \| `sse` | `stdio` |
-| `MCP_HOST` | Bind address for HTTP transports | `127.0.0.1` |
-| `MCP_PORT` | Listen port for HTTP transports | `8000` |
-| `MCP_BEARER_TOKEN` | Optional bearer token enforced on HTTP transports (no-op for stdio) | *unset* |
+| Variable                            | Description                                                         | Default                                |
+| ----------------------------------- | ------------------------------------------------------------------- | -------------------------------------- |
+| `UMAMI_URL`                         | Umami instance URL (no trailing slash)                              | _required_                             |
+| `UMAMI_API_KEY`                     | Umami API key                                                       | _one of API key OR user/pass required_ |
+| `UMAMI_USERNAME` / `UMAMI_PASSWORD` | Self-hosted login credentials                                       | —                                      |
+| `UMAMI_TRANSPORT`                   | `stdio` \| `streamable-http` \| `sse`                               | `stdio`                                |
+| `MCP_HOST`                          | Bind address for HTTP transports                                    | `127.0.0.1`                            |
+| `MCP_PORT`                          | Listen port for HTTP transports                                     | `8000`                                 |
+| `MCP_BEARER_TOKEN`                  | Optional bearer token enforced on HTTP transports (no-op for stdio) | _unset_                                |
 
 CLI flags `--streamable-http` / `--sse` override `UMAMI_TRANSPORT`.
 
@@ -99,6 +99,7 @@ node dist/index.js
 ```
 
 Notes:
+
 - `MCP_BEARER_TOKEN` is **transport-aware** — it has no effect when
   `UMAMI_TRANSPORT=stdio`. Existing stdio consumers keep working untouched.
 - The `Bearer` scheme name is matched case-insensitively (RFC 7235 §2.1); the
@@ -118,11 +119,18 @@ authoritative list.
 ## Development
 
 ```bash
-npm install
+npm install        # also installs husky pre-commit + commit-msg hooks
 npm run build      # Compile TypeScript → dist/
 npm run dev        # tsx watch
-npm run lint       # tsc --noEmit
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint
+npm run format     # prettier --write
+npm test           # vitest run
 ```
+
+Commits must follow [Conventional Commits](https://www.conventionalcommits.org/)
+(enforced via commitlint commit-msg hook). Pre-commit runs eslint + prettier
+on staged files via lint-staged.
 
 ## Origin & Acknowledgments
 
@@ -131,11 +139,10 @@ This repository began as a copy of
 (MIT License — Copyright © 2026 mikusnuz). All credit for the original
 Umami API mapping (66 tools, 2 resources, 2 prompts) belongs to that project.
 
-The TETRA fork is intentionally **disconnected from upstream**: we operate
-independently to add gateway-deployment features (HTTP transport, bearer
-middleware) on our own cadence, without imposing back-and-forth on a small
-single-maintainer project. Future Umami API changes upstream will be picked
-up manually as needed.
+This fork is intentionally **disconnected from upstream**: it adds
+gateway-deployment features (HTTP transport, bearer middleware) and evolves
+on its own cadence. Future Umami API changes upstream are picked up manually
+as needed.
 
 The original `LICENSE` file is retained verbatim and remains in force for the
 material it covers.

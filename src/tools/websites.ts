@@ -20,7 +20,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
         orderBy,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -32,7 +32,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       const data = await client.call("GET", `/api/websites/${websiteId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -48,7 +48,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
       if (shareId) body.shareId = shareId;
       const data = await client.call("POST", "/api/websites", body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -67,7 +67,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
       if (shareId !== undefined) body.shareId = shareId;
       const data = await client.call("POST", `/api/websites/${websiteId}`, body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -79,7 +79,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       await client.call("DELETE", `/api/websites/${websiteId}`);
       return { content: [{ type: "text", text: `Website ${websiteId} deleted successfully.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -91,7 +91,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       const data = await client.call("GET", `/api/websites/${websiteId}/active`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -103,7 +103,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       await client.call("POST", `/api/websites/${websiteId}/reset`);
       return { content: [{ type: "text", text: `Website ${websiteId} data has been reset.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -116,7 +116,7 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId, userId }) => {
       const data = await client.call("POST", `/api/websites/${websiteId}/transfer`, { userId });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -128,6 +128,6 @@ export function registerWebsiteTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       const data = await client.call("GET", `/api/websites/${websiteId}/reports`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }

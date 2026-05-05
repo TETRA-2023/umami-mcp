@@ -32,7 +32,7 @@ export function registerPrompts(server: McpServer) {
           },
         },
       ],
-    })
+    }),
   );
 
   server.prompt(
@@ -77,6 +77,6 @@ export function registerPrompts(server: McpServer) {
           },
         ],
       };
-    }
+    },
   );
 }

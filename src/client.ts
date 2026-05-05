@@ -11,13 +11,11 @@ export class UmamiClient {
 
   private ensureConfigured(): void {
     if (!this.config.baseUrl) {
-      throw new Error(
-        "UMAMI_URL is not configured. Set it in your environment variables."
-      );
+      throw new Error("UMAMI_URL is not configured. Set it in your environment variables.");
     }
     if (!this.config.apiKey && (!this.config.username || !this.config.password)) {
       throw new Error(
-        "Authentication not configured. Set UMAMI_API_KEY or both UMAMI_USERNAME and UMAMI_PASSWORD."
+        "Authentication not configured. Set UMAMI_API_KEY or both UMAMI_USERNAME and UMAMI_PASSWORD.",
       );
     }
   }
@@ -53,9 +51,7 @@ export class UmamiClient {
 
     // Decode JWT expiry (payload is base64url between first and second dots)
     try {
-      const payload = JSON.parse(
-        Buffer.from(data.token.split(".")[1], "base64url").toString()
-      );
+      const payload = JSON.parse(Buffer.from(data.token.split(".")[1], "base64url").toString());
       this.tokenExpiresAt = (payload.exp || 0) * 1000;
     } catch {
       // Fallback: assume 24h validity
@@ -69,7 +65,7 @@ export class UmamiClient {
     method: string,
     path: string,
     body?: Record<string, unknown>,
-    query?: Record<string, string | number | boolean | undefined>
+    query?: Record<string, string | number | boolean | undefined>,
   ): Promise<unknown> {
     this.ensureConfigured();
 

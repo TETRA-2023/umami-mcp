@@ -20,7 +20,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
         orderBy,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -32,7 +32,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ name }) => {
       const data = await client.call("POST", "/api/teams", { name });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -44,7 +44,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId }) => {
       const data = await client.call("GET", `/api/teams/${teamId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -57,7 +57,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, name }) => {
       const data = await client.call("POST", `/api/teams/${teamId}`, { name });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -69,7 +69,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId }) => {
       await client.call("DELETE", `/api/teams/${teamId}`);
       return { content: [{ type: "text", text: `Team ${teamId} deleted successfully.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -81,7 +81,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ accessCode }) => {
       const data = await client.call("POST", "/api/teams/join", { accessCode });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -100,7 +100,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -114,7 +114,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, userId, role }) => {
       const data = await client.call("POST", `/api/teams/${teamId}/users`, { userId, role });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -128,7 +128,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, userId, role }) => {
       const data = await client.call("POST", `/api/teams/${teamId}/users/${userId}`, { role });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -141,7 +141,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, userId }) => {
       const data = await client.call("GET", `/api/teams/${teamId}/users/${userId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -154,7 +154,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, userId }) => {
       await client.call("DELETE", `/api/teams/${teamId}/users/${userId}`);
       return { content: [{ type: "text", text: `User ${userId} removed from team ${teamId}.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -173,7 +173,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -186,7 +186,7 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     async ({ teamId, websiteId }) => {
       const data = await client.call("POST", `/api/teams/${teamId}/websites`, { websiteId });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -198,7 +198,9 @@ export function registerTeamTools(server: McpServer, client: UmamiClient) {
     },
     async ({ teamId, websiteId }) => {
       await client.call("DELETE", `/api/teams/${teamId}/websites/${websiteId}`);
-      return { content: [{ type: "text", text: `Website ${websiteId} removed from team ${teamId}.` }] };
-    }
+      return {
+        content: [{ type: "text", text: `Website ${websiteId} removed from team ${teamId}.` }],
+      };
+    },
   );
 }

@@ -10,7 +10,7 @@ export function registerAccountTools(server: McpServer, client: UmamiClient) {
     async () => {
       const data = await client.call("GET", "/api/me");
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -28,7 +28,7 @@ export function registerAccountTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -46,7 +46,7 @@ export function registerAccountTools(server: McpServer, client: UmamiClient) {
         query,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -62,18 +62,13 @@ export function registerAccountTools(server: McpServer, client: UmamiClient) {
         newPassword,
       });
       return { content: [{ type: "text", text: "Password updated successfully." }] };
-    }
+    },
   );
 
-  server.tool(
-    "verify_auth",
-    "Verify the current authentication token is valid",
-    {},
-    async () => {
-      const data = await client.call("GET", "/api/auth/verify");
-      return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
-  );
+  server.tool("verify_auth", "Verify the current authentication token is valid", {}, async () => {
+    const data = await client.call("GET", "/api/auth/verify");
+    return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+  });
 
   server.tool(
     "get_share",
@@ -84,16 +79,11 @@ export function registerAccountTools(server: McpServer, client: UmamiClient) {
     async ({ shareId }) => {
       const data = await client.call("GET", `/api/share/${shareId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
-  server.tool(
-    "heartbeat",
-    "Check if the Umami server is running and healthy",
-    {},
-    async () => {
-      const data = await client.call("GET", "/api/heartbeat");
-      return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
-  );
+  server.tool("heartbeat", "Check if the Umami server is running and healthy", {}, async () => {
+    const data = await client.call("GET", "/api/heartbeat");
+    return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+  });
 }

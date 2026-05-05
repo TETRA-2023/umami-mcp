@@ -17,6 +17,6 @@ export function registerWebsiteResources(server: McpServer, client: UmamiClient)
           },
         ],
       };
-    }
+    },
   );
 }

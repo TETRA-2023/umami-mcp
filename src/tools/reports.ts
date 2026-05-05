@@ -18,7 +18,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
         orderBy,
       });
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -30,7 +30,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
     async ({ reportId }) => {
       const data = await client.call("GET", `/api/reports/${reportId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -40,7 +40,16 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
       websiteId: z.string().describe("Website UUID"),
       name: z.string().describe("Report name"),
       type: z
-        .enum(["funnel", "retention", "utm", "goals", "insights", "revenue", "journey", "attribution"])
+        .enum([
+          "funnel",
+          "retention",
+          "utm",
+          "goals",
+          "insights",
+          "revenue",
+          "journey",
+          "attribution",
+        ])
         .describe("Report type"),
       description: z.string().optional().describe("Report description"),
       parameters: z
@@ -54,7 +63,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
       if (parameters) body.parameters = parameters;
       const data = await client.call("POST", "/api/reports", body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -65,7 +74,16 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
       websiteId: z.string().optional().describe("Website UUID"),
       name: z.string().optional().describe("Report name"),
       type: z
-        .enum(["funnel", "retention", "utm", "goals", "insights", "revenue", "journey", "attribution"])
+        .enum([
+          "funnel",
+          "retention",
+          "utm",
+          "goals",
+          "insights",
+          "revenue",
+          "journey",
+          "attribution",
+        ])
         .optional()
         .describe("Report type"),
       description: z.string().optional().describe("Report description"),
@@ -83,7 +101,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
       if (parameters !== undefined) body.parameters = parameters;
       const data = await client.call("POST", `/api/reports/${reportId}`, body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 
   server.tool(
@@ -95,7 +113,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
     async ({ reportId }) => {
       await client.call("DELETE", `/api/reports/${reportId}`);
       return { content: [{ type: "text", text: `Report ${reportId} deleted successfully.` }] };
-    }
+    },
   );
 
   server.tool(
@@ -103,17 +121,24 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
     "Execute a report by type and get results (funnel, retention, utm, goals, insights, revenue, journey, attribution)",
     {
       type: z
-        .enum(["funnel", "retention", "utm", "goals", "insights", "revenue", "journey", "attribution"])
+        .enum([
+          "funnel",
+          "retention",
+          "utm",
+          "goals",
+          "insights",
+          "revenue",
+          "journey",
+          "attribution",
+        ])
         .describe("Report type to run"),
       websiteId: z.string().describe("Website UUID"),
-      parameters: z
-        .record(z.unknown())
-        .describe("Report-specific parameters (varies by type)"),
+      parameters: z.record(z.unknown()).describe("Report-specific parameters (varies by type)"),
     },
     async ({ type, websiteId, parameters }) => {
       const body: Record<string, unknown> = { websiteId, ...parameters };
       const data = await client.call("POST", `/api/reports/${type}`, body);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }

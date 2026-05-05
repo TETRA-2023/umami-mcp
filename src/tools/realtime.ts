@@ -12,6 +12,6 @@ export function registerRealtimeTools(server: McpServer, client: UmamiClient) {
     async ({ websiteId }) => {
       const data = await client.call("GET", `/api/realtime/${websiteId}`);
       return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
-    }
+    },
   );
 }
