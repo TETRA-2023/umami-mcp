@@ -7,6 +7,24 @@ on:
     branches: [main]
 
 jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gitleaks
+        run: |
+          set -euo pipefail
+          VERSION=8.30.1
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: Scan repo (full history)
+        run: gitleaks detect --no-banner --redact --verbose
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +50,7 @@ jobs:
       - run: npm test
 
   build:
-    needs: [lint, test]
+    needs: [secrets, lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,7 +62,7 @@ jobs:
       - run: npm run build
 
   docker:
-    needs: [lint, test]
+    needs: [secrets, lint, test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
