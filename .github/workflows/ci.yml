@@ -94,22 +94,42 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract version from package.json
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        id: version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+' || { echo "::error::Invalid version: $VERSION"; exit 1; }
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Build and push image
+      - name: Build and push image (:latest)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
-            ${{ steps.repo.outputs.image }}:latest
-            ${{ steps.repo.outputs.image }}:${{ steps.version.outputs.version }}
+          tags: ${{ steps.repo.outputs.image }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  release:
+    needs: [secrets, lint, test, build]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    concurrency: release
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
