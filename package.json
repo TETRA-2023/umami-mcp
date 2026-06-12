@@ -47,7 +47,12 @@
     "hono": ">=4.12.14",
     "@hono/node-server": ">=1.19.13",
     "express-rate-limit": ">=8.2.2",
-    "esbuild": ">=0.25.0"
+    "esbuild": ">=0.25.0",
+    "qs": ">=6.15.2",
+    "ip-address": ">=10.1.1",
+    "picomatch": ">=4.0.4",
+    "npm": ">=11.6.2",
+    "brace-expansion": ">=2.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
