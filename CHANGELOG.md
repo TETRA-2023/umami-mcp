@@ -1,3 +1,8 @@
+## <small>0.2.3 (2026-10-06)</small>
+
+- fix: bump @modelcontextprotocol/sdk from 1.29.0 to 1.31.0 (#67) ([c3a0c9c](https://github.com/TETRA-2023/umami-mcp/commit/c3a0c9c)), closes [#67](https://github.com/TETRA-2023/umami-mcp/issues/67)
+- fix: move the runtime image and CI to Node 22 (Node 20 is EOL since 2026-04-30) (#66) ([cf69b26](https://github.com/TETRA-2023/umami-mcp/commit/cf69b26)), closes [#66](https://github.com/TETRA-2023/umami-mcp/issues/66)
+
 ## <small>0.2.2 (2026-10-06)</small>
 
 - fix: bump @hono/node-server from 2.0.1 to 2.1.1 (#51) ([d7af60f](https://github.com/TETRA-2023/umami-mcp/commit/d7af60f)), closes [#51](https://github.com/TETRA-2023/umami-mcp/issues/51)
