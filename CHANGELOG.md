@@ -1,3 +1,11 @@
+## <small>0.2.4 (2026-10-21)</small>
+
+- fix: bump @modelcontextprotocol/sdk from 1.31.0 to 1.32.0 (#72) ([85f746c](https://github.com/TETRA-2023/umami-mcp/commit/85f746c)), closes [#72](https://github.com/TETRA-2023/umami-mcp/issues/72)
+- chore: bump handlebars from 4.7.9 to 4.7.10 (#70) ([329c041](https://github.com/TETRA-2023/umami-mcp/commit/329c041)), closes [#70](https://github.com/TETRA-2023/umami-mcp/issues/70)
+- chore: bump vite from 8.2.2 to 8.3.5 (#71) ([6399e86](https://github.com/TETRA-2023/umami-mcp/commit/6399e86)), closes [#71](https://github.com/TETRA-2023/umami-mcp/issues/71)
+- ci: gate merges and :stable on a container smoke test (initialize + tools/list) (#69) ([843e592](https://github.com/TETRA-2023/umami-mcp/commit/843e592)), closes [#69](https://github.com/TETRA-2023/umami-mcp/issues/69) [TETRA-2023/langfuse-mcp#81](https://github.com/TETRA-2023/langfuse-mcp/issues/81) [langfuse-mcp#84](https://github.com/langfuse-mcp/issues/84) [epo-mcp#172](https://github.com/epo-mcp/issues/172)
+- ci(deps): auto-merge with the GH_TOKEN PAT so merges fire main's CI and release (#68) ([9b44354](https://github.com/TETRA-2023/umami-mcp/commit/9b44354)), closes [#68](https://github.com/TETRA-2023/umami-mcp/issues/68) [160-#165](https://github.com/160-/issues/165) [#63](https://github.com/TETRA-2023/umami-mcp/issues/63)
+
 ## <small>0.2.3 (2026-10-06)</small>
 
 - fix: bump @modelcontextprotocol/sdk from 1.29.0 to 1.31.0 (#67) ([c3a0c9c](https://github.com/TETRA-2023/umami-mcp/commit/c3a0c9c)), closes [#67](https://github.com/TETRA-2023/umami-mcp/issues/67)
