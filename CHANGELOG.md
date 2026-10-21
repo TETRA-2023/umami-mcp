@@ -1,3 +1,7 @@
+## <small>0.2.5 (2026-10-21)</small>
+
+- fix: bump hono from 4.13.7 to 4.13.13 (#73) ([539aaac](https://github.com/TETRA-2023/umami-mcp/commit/539aaac)), closes [#73](https://github.com/TETRA-2023/umami-mcp/issues/73)
+
 ## <small>0.2.4 (2026-10-21)</small>
 
 - fix: bump @modelcontextprotocol/sdk from 1.31.0 to 1.32.0 (#72) ([85f746c](https://github.com/TETRA-2023/umami-mcp/commit/85f746c)), closes [#72](https://github.com/TETRA-2023/umami-mcp/issues/72)
