@@ -137,22 +137,33 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  # Tag only (Taiga #2870): semantic-release tags vX.Y.Z and creates the GitHub
+  # Release with the tetra-release App; nothing is committed to main (no
+  # changelog/npm/git plugins, package.json stays at 0.0.0). The tag (pushed by
+  # the App, not GITHUB_TOKEN) triggers release-image.yml. npm, not Python, so
+  # this job cannot reuse TETRA-2023/ci-workflows' release.yml.
   release:
     needs: [secrets, lint, test, build]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     concurrency: release
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      id-token: write
+      contents: read
 
     steps:
+      # contents:write only: the github plugin's issue/PR comments and labels
+      # are turned off in .releaserc.json, so no issues/pull-requests scope.
+      - id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          permission-contents: write
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          persist-credentials: false
 
       - uses: actions/setup-node@v6
         with:
@@ -163,6 +174,6 @@ jobs:
 
       - name: Semantic Release
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: npx semantic-release
