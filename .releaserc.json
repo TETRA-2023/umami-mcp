@@ -15,24 +15,12 @@
       }
     ],
     [
-      "@semantic-release/changelog",
+      "@semantic-release/github",
       {
-        "changelogFile": "CHANGELOG.md"
+        "successComment": false,
+        "failComment": false,
+        "releasedLabels": false
       }
-    ],
-    [
-      "@semantic-release/npm",
-      {
-        "npmPublish": false
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["package.json", "package-lock.json", "CHANGELOG.md"],
-        "message": "chore(release): v${nextRelease.version}\n\n${nextRelease.notes}"
-      }
-    ],
-    "@semantic-release/github"
+    ]
   ]
 }

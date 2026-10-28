@@ -1,3 +1,8 @@
+# CHANGELOG
+
+> Frozen on 2026-10-28 at v0.2.5. Later versions: see the
+> [GitHub Releases](https://github.com/TETRA-2023/umami-mcp/releases).
+
 ## <small>0.2.5 (2026-10-21)</small>
 
 - fix: bump hono from 4.13.7 to 4.13.13 (#73) ([539aaac](https://github.com/TETRA-2023/umami-mcp/commit/539aaac)), closes [#73](https://github.com/TETRA-2023/umami-mcp/issues/73)
