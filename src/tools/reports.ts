@@ -53,7 +53,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
         .describe("Report type"),
       description: z.string().optional().describe("Report description"),
       parameters: z
-        .record(z.unknown())
+        .record(z.string(), z.unknown())
         .optional()
         .describe("Report-specific parameters (JSON object)"),
     },
@@ -88,7 +88,7 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
         .describe("Report type"),
       description: z.string().optional().describe("Report description"),
       parameters: z
-        .record(z.unknown())
+        .record(z.string(), z.unknown())
         .optional()
         .describe("Report-specific parameters (JSON object)"),
     },
@@ -133,7 +133,9 @@ export function registerReportTools(server: McpServer, client: UmamiClient) {
         ])
         .describe("Report type to run"),
       websiteId: z.string().describe("Website UUID"),
-      parameters: z.record(z.unknown()).describe("Report-specific parameters (varies by type)"),
+      parameters: z
+        .record(z.string(), z.unknown())
+        .describe("Report-specific parameters (varies by type)"),
     },
     async ({ type, websiteId, parameters }) => {
       const body: Record<string, unknown> = { websiteId, ...parameters };
