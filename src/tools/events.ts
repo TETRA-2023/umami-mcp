@@ -11,7 +11,10 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
       hostname: z.string().describe("Hostname of the site (e.g. 'example.com')"),
       url: z.string().describe("URL path (e.g. '/checkout')"),
       eventName: z.string().optional().describe("Custom event name (omit for pageview)"),
-      eventData: z.record(z.unknown()).optional().describe("Custom event data as key-value pairs"),
+      eventData: z
+        .record(z.string(), z.unknown())
+        .optional()
+        .describe("Custom event data as key-value pairs"),
       referrer: z.string().optional().describe("Referrer URL"),
       language: z.string().optional().describe("Browser language (e.g. 'en-US')"),
       title: z.string().optional().describe("Page title"),
@@ -145,7 +148,7 @@ export function registerEventTools(server: McpServer, client: UmamiClient) {
             hostname: z.string().describe("Hostname"),
             url: z.string().describe("URL path"),
             eventName: z.string().optional().describe("Event name (omit for pageview)"),
-            eventData: z.record(z.unknown()).optional().describe("Custom event data"),
+            eventData: z.record(z.string(), z.unknown()).optional().describe("Custom event data"),
             referrer: z.string().optional().describe("Referrer URL"),
             language: z.string().optional().describe("Browser language"),
             title: z.string().optional().describe("Page title"),
