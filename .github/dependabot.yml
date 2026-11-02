@@ -22,6 +22,8 @@ updates:
       # Dev/tooling deps -> chore(deps-dev): no release.
       prefix: "fix"
       prefix-development: "chore"
+      # include: scope -> "fix(deps): ..." / "chore(deps-dev): ..." (US-7 #2938).
+      include: "scope"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -34,3 +36,7 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    commit-message:
+      # Action pins are CI-only: "ci(deps): ..." never cuts a release (US-7 #2938).
+      prefix: "ci"
+      include: "scope"
