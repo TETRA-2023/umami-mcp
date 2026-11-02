@@ -24,6 +24,12 @@ updates:
       prefix-development: "chore"
       # include: scope -> "fix(deps): ..." / "chore(deps-dev): ..." (US-7 #2938).
       include: "scope"
+    ignore:
+      # @types/node follows the RUNTIME major (Node 22 in Dockerfile and CI),
+      # not the latest Node: a newer major types APIs we cannot call (#42, #90).
+      # Raise it together with the runtime.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
